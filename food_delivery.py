@@ -72,7 +72,7 @@ class DeliveryPartner(User):
         print("Rating:", self.rating)
 
     def accept_order(self, order):
-        order.update_status("Accepted")
+        order.update_status("Order Accepted")
         self.is_available = False
 
     def deliver(self, order, otp):
@@ -80,6 +80,8 @@ class DeliveryPartner(User):
         if order.verify_otp(otp):
             order.update_status("Delivered")
             self.is_available = True
+            return True
+        return False
 
 
 class MenuItem:
@@ -119,6 +121,26 @@ class Order:
         self._status = "Placed"
         self._otp = 1234
 
+    @property
+    def order_id(self):
+        """Public property to access order ID"""
+        return self._order_id
+
+    @property
+    def status(self):
+        """Public property to access order status"""
+        return self._status
+
+    @property
+    def otp(self):
+        """Public property to access OTP"""
+        return self._otp
+
+    @property
+    def items(self):
+        """Public property to access order items"""
+        return self._items
+
     def calculate_bill(self):
         subtotal = 0
 
@@ -137,7 +159,7 @@ class Order:
 
     def update_status(self, new_status):
 
-        if new_status in ["Placed", "Accepted", "Delivered"]:
+        if new_status in ["Placed", "Order Accepted", "Accepted", "Delivered"]:
             self._status = new_status
 
     def verify_otp(self, otp):
