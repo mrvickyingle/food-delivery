@@ -112,7 +112,7 @@ else:
         add_money = st.form_submit_button("Add Money")
 
     if add_money:
-        customer.add_wallet_balance(amount)
+        customer.add_to_wallet(amount)
         st.success(f"₹{amount:.2f} added to wallet.")
         st.rerun()
 
